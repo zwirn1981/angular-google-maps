@@ -110,11 +110,19 @@
         <div ng-init="opts = {animation:1}">
             <marker coords="map.clickedMarker" options="opts">
                 <!--<marker-label content="map.clickedMarker.title" anchor="24 40" class="marker-labels"/>-->
-                <window isIconVisibleOnClick="true">This is my clicked marker!
+                <!-- useMarkersOriginVisibility="true" --><!-- can be used with twoway binding as well on a boolean value-->
+                <window isIconVisibleOnClick="false">This is my clicked marker!
                     <p class="muted">My marker will reappear when you close me.</p>
                 </window>
             </marker>
         </div>
+
+        <markers models="map.clickedMarkerArray" coords="'self'" >
+            <windows show="'showWindow'" closeClick="'closeClick'" >This is my clicked marker!
+                <p class="muted">Single Marker, Stays open on Window open.</p>
+                <p ng-non-bindable>This is an info window at {{ latitude | number:4 }}, {{ longitude | number:4 }}!</p>
+            </windows>
+        </markers>
 
         <polyline ng-repeat="p in map.polylines" path="p.path" stroke="p.stroke" visible='p.visible'
                   geodesic='p.geodesic' fit="false" editable="p.editable" draggable="p.draggable"></polyline>

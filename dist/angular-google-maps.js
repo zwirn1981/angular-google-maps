@@ -1019,7 +1019,7 @@ Nicholas McCready - https://twitter.com/nmccready
         this.mapCtrl = mapCtrl;
         this.markerCtrl = markerCtrl;
         this.isIconVisibleOnClick = isIconVisibleOnClick;
-        this.initialMarkerVisibility = this.markerCtrl != null ? this.markerCtrl.getVisible() : false;
+        this.initialMarkerVisibility = (this.markerCtrl != null) && this.scope.useMarkersOriginVisibility ? this.markerCtrl.getVisible() : void 0;
         this.$log = directives.api.utils.Logger;
         this.$http = $http;
         this.$templateCache = $templateCache;
@@ -1043,11 +1043,18 @@ Nicholas McCready - https://twitter.com/nmccready
         if ((this.gWin == null) && createOpts) {
           this.opts = this.markerCtrl != null ? this.createWindowOptions(this.markerCtrl, this.scope, this.element.html(), {}) : {};
         }
-        if ((this.opts != null) && this.gWin === void 0) {
+        if ((this.opts != null) && (this.gWin == null)) {
           this.gWin = new google.maps.InfoWindow(this.opts);
           return google.maps.event.addListener(this.gWin, 'closeclick', function() {
+            var _base;
             if (_this.markerCtrl != null) {
-              _this.markerCtrl.setVisible(_this.initialMarkerVisibility);
+              if (_this.initialMarkerVisibility != null) {
+                _this.markerCtrl.setVisible(_this.initialMarkerVisibility);
+                _this.markerCtrl.setAnimation(_this.markerCtrl.getAnimation());
+              } else if (!_this.isIconVisibleOnClick) {
+                _this.markerCtrl.setVisible((typeof (_base = _this.scope).show === "function" ? _base.show(_this.scope.show) : void 0) ? void 0 : true);
+                _this.markerCtrl.setAnimation(_this.markerCtrl.getAnimation());
+              }
             }
             if (_this.scope.closeClick != null) {
               return _this.scope.closeClick();
@@ -1085,7 +1092,7 @@ Nicholas McCready - https://twitter.com/nmccready
               return _this.hideWindow();
             } else {
               if ((newValue.latitude == null) || (newValue.longitude == null)) {
-                _this.$log.error("WindowChildMarker cannot render marker as scope.coords as no position on marker: " + (JSON.stringify(_this.model)));
+                _this.$log.error("WindowChildMarker cannot render marker as scope.coords has no position on marker: " + (JSON.stringify(_this.model)));
                 return;
               }
               return _this.gWin.setPosition(new google.maps.LatLng(newValue.latitude, newValue.longitude));
@@ -1680,7 +1687,7 @@ Nicholas McCready - https://twitter.com/nmccready
         this.$interpolate = $interpolate;
         this.windows = [];
         this.windwsIndex = 0;
-        this.scopePropNames = ['show', 'coords', 'templateUrl', 'templateParameter', 'isIconVisibleOnClick', 'closeClick'];
+        this.scopePropNames = ['show', 'coords', 'templateUrl', 'templateParameter', 'isIconVisibleOnClick', 'closeClick', 'useMarkersOriginVisibility'];
         _ref = this.scopePropNames;
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           name = _ref[_i];
@@ -2031,7 +2038,8 @@ Nicholas McCready - https://twitter.com/nmccready
           templateParameter: '=templateparameter',
           isIconVisibleOnClick: '=isiconvisibleonclick',
           closeClick: '&closeclick',
-          options: '=options'
+          options: '=options',
+          useMarkersOriginVisibility: "=usemarkersoriginvisibility"
         };
         this.$log = directives.api.utils.Logger;
       }

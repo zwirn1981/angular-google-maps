@@ -20,6 +20,10 @@
                 isIconVisibleOnClick: '=isiconvisibleonclick',
                 closeClick: '&closeclick', #scope glue to gmap InfoWindow closeclick
                 options: '=options'
+                #this only applies if the window was derrived from a marker
+                #having this attribute will change the default behavior of always looking for a markers original state
+                #to not using the markers the markers original state at all
+                useMarkersOriginVisibility: "=usemarkersoriginvisibility"
             }
             @$log = directives.api.utils.Logger
 

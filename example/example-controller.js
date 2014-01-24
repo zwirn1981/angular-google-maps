@@ -127,6 +127,9 @@ function ExampleController($scope, $timeout, $log, $http) {
                     longitude: -108.61084
                 }
             ],
+            clickedMarkerArray:[ //to test markers and useMarkersOriginVisibility="true/false"
+            ]
+            ,
             dynamicMarkers: [],
             randomMarkers: [],
             doClusterRandomMarkers: true,
@@ -366,5 +369,10 @@ function ExampleController($scope, $timeout, $log, $http) {
             };
         });
         $scope.map.dynamicMarkers = dynamicMarkers;
+
+        $scope.map.clickedMarkerArray = [{
+            latitude:46.975568,
+            longitude:-94.460449
+        }];
     }, 2000);
 }

@@ -7,7 +7,7 @@
             @mapCtrl = mapCtrl
             @markerCtrl = markerCtrl
             @isIconVisibleOnClick = isIconVisibleOnClick
-            @initialMarkerVisibility = if @markerCtrl? then @markerCtrl.getVisible() else false
+            @initialMarkerVisibility = if @markerCtrl? and @scope.useMarkersOriginVisibility then @markerCtrl.getVisible() else undefined
             @$log = directives.api.utils.Logger
             @$http = $http
             @$templateCache = $templateCache
@@ -26,13 +26,19 @@
             if !@gWin? and createOpts
                 @opts = if @markerCtrl? then @createWindowOptions(@markerCtrl, @scope, @element.html(), {}) else {}
 
-            if @opts? and @gWin == undefined
+            if @opts? and !@gWin?
                 @gWin = new google.maps.InfoWindow(@opts)
 
                 # Set visibility of marker back to what it was before opening the window
                 google.maps.event.addListener @gWin, 'closeclick', =>
                     if @markerCtrl?
-                        @markerCtrl.setVisible(@initialMarkerVisibility)
+                        if @initialMarkerVisibility?
+                            @markerCtrl.setVisible(@initialMarkerVisibility)
+                            @markerCtrl.setAnimation(@markerCtrl.getAnimation()) #added since animation seems to dissapear once setVisible is changed
+                        else unless @isIconVisibleOnClick
+                            @markerCtrl.setVisible( if @scope.show? @scope.show else true)
+                            @markerCtrl.setAnimation(@markerCtrl.getAnimation())
+
                     @scope.closeClick() if @scope.closeClick?
 
         watchShow: () =>
@@ -57,34 +63,31 @@
                         @hideWindow()
                     else
                         if !newValue.latitude? or !newValue.longitude?
-                            @$log.error "WindowChildMarker cannot render marker as scope.coords as no position on marker: #{JSON.stringify @model}"
+                            @$log.error "WindowChildMarker cannot render marker as scope.coords has no position on marker: #{JSON.stringify @model}"
                             return
                         @gWin.setPosition(new google.maps.LatLng(newValue.latitude, newValue.longitude))
             , true)
 
         handleClick: ()=>
-            # Show the window and hide the marker on click
             if @markerCtrl?
-                google.maps.event.addListener(@markerCtrl, 'click', =>
+                google.maps.event.addListener @markerCtrl, 'click', =>
                     @createGWin(true) unless @gWin?
                     pos = @markerCtrl.getPosition()
                     if @gWin?
-                        @gWin.setPosition(pos)
-                        @gWin.open(@mapCtrl)
-                    @markerCtrl.setVisible(@isIconVisibleOnClick)
-                )
+                        @gWin.setPosition pos
+                        @gWin.open @mapCtrl
+                    @markerCtrl.setVisible @isIconVisibleOnClick
 
         showWindow: () =>
             if @scope.templateUrl
                 if @gWin
-                    @$http.get(@scope.templateUrl, { cache: @$templateCache }).then((content) =>
+                    @$http.get(@scope.templateUrl, { cache: @$templateCache }).then (content) =>
                         templateScope = @scope.$new()
                         if angular.isDefined(@scope.templateParameter)
                             templateScope.parameter = @scope.templateParameter
                         compiled = @$compile(content.data)(templateScope)
                         @gWin.setContent(compiled.get(0))
                         @gWin.open(@mapCtrl)
-                    )
             else
                 @gWin.open(@mapCtrl) if @gWin?
 

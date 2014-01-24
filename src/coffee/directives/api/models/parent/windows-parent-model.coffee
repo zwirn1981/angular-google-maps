@@ -11,7 +11,7 @@
             @windows = []
             @windwsIndex = 0
             @scopePropNames = ['show', 'coords', 'templateUrl', 'templateParameter',
-                               'isIconVisibleOnClick', 'closeClick']
+                               'isIconVisibleOnClick', 'closeClick','useMarkersOriginVisibility']
             #setting up local references to propety keys IE: @coordsKey
             @[name + 'Key'] = undefined for name in @scopePropNames
             @linked = new directives.api.utils.Linked(scope, element, attrs, ctrls)
