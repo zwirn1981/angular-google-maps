@@ -157,6 +157,116 @@ Nicholas McCready - https://twitter.com/nmccready
 
 }).call(this);
 
+/*
+
+Google Maps Service Provider & API.
+
+    It gives us a better way to call a custom maps api js from google, with .config parameters in the application.
+    If no config is made, we're calling the default map.
+
+    All the other directives will wait for this service provider to put the map on page.
+
+@authors
+Kovacs Arthur - http://github.com/ArthurianX/
+*/
+
+
+(function() {
+  (function() {
+    var app;
+    app = angular.module("google-maps", []);
+    return app.provider("googleMaps", [
+      function() {
+        var GoogleMapsService, apiKey, options, useLanguage, useLibrary, useSensor, useVersion;
+        useSensor = false;
+        apiKey = null;
+        useLanguage = null;
+        useLibrary = null;
+        useVersion = null;
+        options = {};
+        this.useSensor = function(sensor) {
+          if (sensor) {
+            options.sensor = sensor;
+            return this;
+          }
+          return useSensor;
+        };
+        this.apiKey = function(key) {
+          if (key) {
+            options.key = key;
+            return this;
+          }
+          return apiKey;
+        };
+        this.useLanguage = function(language) {
+          if (language) {
+            options.language = language;
+            return this;
+          }
+          return useLanguage;
+        };
+        this.useLibrary = function(libraries) {
+          if (libraries) {
+            options.libraries = libraries;
+            return this;
+          }
+          return useLibrary;
+        };
+        this.useVersion = function(v) {
+          if (v) {
+            options.v = v;
+            return this;
+          }
+          return useVersion;
+        };
+        GoogleMapsService = function($q, $window) {
+          var makeMap;
+          makeMap = function() {
+            var concatURL, url;
+            url = "https://maps.googleapis.com/maps/api/js?";
+            concatURL = function() {
+              return angular.forEach(options, function(value, key) {
+                return url += "&" + key + "=" + value;
+              });
+            };
+            if (options && ("sensor" in options)) {
+              concatURL();
+            } else if (options) {
+              options.sensor = false;
+              concatURL();
+            } else {
+              url += "?sensor=false&v=3.14";
+            }
+            return url;
+          };
+          this.runMap = function() {
+            var deferred, randomizedFunctionName, script;
+            deferred = $q.defer();
+            randomizedFunctionName = "onGoogleMapsReady" + Math.round(Math.random() * 1000);
+            window[randomizedFunctionName] = function() {
+              window[randomizedFunctionName] = null;
+              return deferred.resolve($window.google.maps);
+            };
+            if (typeof $window.google !== "undefined" && typeof $window.google.maps !== "undefined") {
+              deferred.resolve($window.google.maps);
+              return deferred.promise;
+            }
+            script = document.createElement("script");
+            script.type = "text/javascript";
+            script.src = makeMap() + "&callback=" + randomizedFunctionName;
+            document.body.appendChild(script);
+            return deferred.promise;
+          };
+        };
+        this.$get = function($q, $window) {
+          return new GoogleMapsService($q, $window);
+        };
+      }
+    ]);
+  })();
+
+}).call(this);
+
 (function() {
   this.ngGmapModule = function(names, fn) {
     var space, _name;
