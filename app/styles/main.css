@@ -185,5 +185,15 @@ ul.separated li:not(:first-child) {
 	width: 80px !important;
 }
 
+td code {
+	font-size: 11px;
+}
 
+pre {
+	font-size: 11px;
+}
 
+.demo {
+	margin-top: 20px;
+	display: block;
+}

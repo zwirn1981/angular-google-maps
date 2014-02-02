@@ -1,76 +1,146 @@
 <h1 class="page-header">Demo</h1>
 
-<div>
-    We are working on a live (self hosted) demo, but it is not quite yet ready :( . For now we are using
-    rawgithub.com to host our example. To run it yourself, execute "grunt example".
+<div class="panel-group" id="codeAccordion">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h4 class="panel-title">
+				<a data-toggle="collapse" data-parent="#codeAccordion" href="#collapseCode">Controller code</a>
+			</h4>
+		</div>
+		<div id="collapseCode" class="panel-collapse collapse">		
+			<pre><ng-include src="'https://rawgithub.com/nlaplante/angular-google-maps/website/app/scripts/controllers/demo.js'"></ng-include></pre>
+		</div>
+		
+		<div class="panel-heading">
+			<h4 class="panel-title">
+				<a data-toggle="collapse" data-parent="#codeAccordion" href="#collapseTemplate">Template code</a>
+			</h4>
+		</div>
+		<div id="collapseTemplate" class="panel-collapse collapse">		
+			<pre ng-bind='templateHtml'></pre>
+		</div>		
+	</div>
 </div>
-        <iframe src="http://rawgithub.com/nlaplante/angular-google-maps/master/example/example.html"
-                width="1400" height="1050" frameBorder="0">
-        </iframe>
-<!--<google-map class="demo" center="map.center" zoom="map.zoom" draggable="true">-->
-	<!--<marker class="animate-repeat" ng-repeat="m in map.markers" coords="m.coords"></marker>-->
-	<!--<polyline path="map.polyline.path" draggable="map.polyline.draggable" -->
-		<!--clickable="map.polyline.clickable"-->
-		<!--geodesic="map.polyline.geodesic"-->
-		<!--editable="map.polyline.editable"></polyline>-->
-<!--	<markers models="map.markers" coords="'self'" labelContent="'title'" />-->
-<!--</google-map>-->
 
-<!--<ul class="nav nav-tabs">-->
-	<!--<li ng-class="{'active': tab === 'status'}">-->
-		<!--<a href="#status" data-toggle="tab" ng-click="tab = 'status'">Status</a>-->
-	<!--</li>-->
-	<!--<li ng-class="{'active': tab === 'script'}">-->
-		<!--<a href="#script" data-toggle="tab" ng-click="tab = 'script'">JavaScript</a>-->
-	<!--</li>-->
-	<!--<li ng-class="{'active': tab === 'html'}">-->
-		<!--<a href="#html" data-toggle="tab" ng-click="tab = 'html'">HTML</a>-->
-	<!--</li>	-->
-<!--</ul>-->
+<google-map class="demo" center="map.center" zoom="map.zoom" draggable="true">
 
-<!--<div class="tab-content">-->
-	<!--<div class="tab-pane" ng-class="{'active': tab === 'status'}" id="status">	-->
-		<!--<ul class="list-group">-->
-			<!--<li href="#" class="list-group-item">-->
-				<!--<h4 class="list-group-item-heading">Center</h4>-->
-				<!--{{ map.center | json }}-->
-			<!--</li>-->
-			<!--<li href="#" class="list-group-item">-->
-				<!--<h4 class="list-group-item-heading">Zoom</h4>-->
-				<!--{{ map.zoom }}-->
-			<!--</li>-->
-			<!--<li href="#" class="list-group-item">-->
-				<!--<h4 class=list-group-item-heading">Markers</h4>-->
-				<!--<ul class="list-unstyled">-->
-					<!--<li ng-repeat="marker in map.markers track by marker.id">-->
-						<!--<div class="col-md-6">-->
-							<!--<input type="text" class="form-control" ng-model="marker.latitude" />-->
-						<!--</div>-->
-						<!--<div class="col-md-6">-->
-							<!--<input type="text" class="form-control" ng-model="marker.longitude" />-->
-						<!--</div>-->
-					<!--</li>-->
-				<!--</ul>-->
-			<!--</li>-->
-		<!--</ul>-->
-	<!--</div>-->
-	<!---->
-	<!--<div class="tab-pane" ng-class="{'active': tab === 'script'}" id="script">-->
-		<!--<pre>$scope.map = {-->
-	<!--center: {-->
-		<!--latitude: 40.47,	// NYC-->
-		<!--longitude: -73.85	// NYC-->
-	<!--},-->
-	<!--zoom: 8-->
-<!--};</pre>-->
-	<!--</div>-->
-	<!---->
-	<!--<div class="tab-pane" ng-class="{'active': tab === 'html'}" id="html">-->
-		<!--<pre>&lt;google-map class="main" center="map.center" zoom="map.zoom" draggable="true"&gt;-->
-	<!--&lt;!-- Mark map center --&gt;-->
-	<!--&lt;marker coords="map.center" /&gt;-->
-<!--&lt;/google-map&gt;</pre>-->
-	<!--</div>-->
-<!--</div>-->
+	<!-- our markers -->
+	<markers models="map.markers" coords="'coords'" fit="true" doCluster="true"></marker>
+	
+	<!-- our polylines -->
+	<polyline ng-repeat="p in map.polylines track by p.id" path="p.path" draggable="p.draggable" 
+		clickable="p.clickable"
+		geodesic="p.geodesic"
+		editable="p.editable"></polyline>
+		
+	<!-- our polygons -->
+	<polygon ng-repeat="p in map.polylines track by p.id" path="p.path" draggable="p.draggable" 
+		fill="p.fill"
+		clickable="p.clickable"
+		geodesic="p.geodesic"
+		editable="p.editable"></polygon>
+
+</google-map>
+
+<div class="row">
+
+	<div class="col-md-4">
+		<div class="panel-group" id="accordionMap">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h4 class="panel-title">
+						<a data-toggle="collapse" data-parent="#accordionMap" href="#collapseMap">Map</a>
+					</h4>		
+				</div>								
+				<div id="collapseMap" class="panel-collapse collapse in">
+					<table class="table">
+						<thead>
+							<tr>
+								<th>Property</th>
+								<th>Value</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>center</td>
+								<td><code>{{ map.center | json  }}</code></td>
+							</tr>
+							<tr>
+								<td>zoom</td>
+								<td><code>{{ map.zoom | json }}</code></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="col-md-4">
+		<div class="panel-group" id="accordion">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h4 class="panel-title">
+						<a data-toggle="collapse" data-parent="#accordion" href="#collapseMarkers">Markers</a>
+						<span ng-click="addMarker()" class="glyphicon glyphicon-plus pull-right"></span>
+					</h4>		
+				</div>								
+				<div id="collapseMarkers" class="panel-collapse collapse in">
+					<table class="table">
+						<thead>
+							<tr>
+								<th>Coordinates</th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="m in map.markers track by m.id">
+								<td><code>{{ m.coords | json }}</code></td>
+								<td>
+									<span class="glyphicon glyphicon-remove" ng-click="removeMarker(m)"></span>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="col-md-4">
+		<div class="panel-group" id="accordioPolylines">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h4 class="panel-title">
+						<a data-toggle="collapse" data-parent="#accordion" href="#collapsePolylines">Polylines</a>
+						<span ng-click="addPolyline()" class="glyphicon glyphicon-plus pull-right"></span>
+					</h4>		
+				</div>								
+				<div id="collapsePolylines" class="panel-collapse collapse in">
+					<table class="table">
+						<thead>
+							<tr>
+								<th>Coordinates</th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="p in map.polylines track by p.id">
+								<td>
+									<div ng-repeat="point in p.path">
+										<code >{{ point | json }}</code>
+									</div>
+								</td>
+								<td>
+									<span class="glyphicon glyphicon-remove" ng-click="removePolyline(p)"></span>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 
 
