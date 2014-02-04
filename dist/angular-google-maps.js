@@ -2331,7 +2331,7 @@ Nicholas McCready - https://twitter.com/nmccready
           this.scope = {
             coords: '=coords',
             icon: '=icon',
-            click: '&click',
+            click: '&ngClick',
             options: '=options',
             events: '=events'
           };
@@ -2429,7 +2429,7 @@ Nicholas McCready - https://twitter.com/nmccready
           var self;
           Marker.__super__.constructor.call(this, $timeout);
           self = this;
-          this.template = '<span class="angular-google-map-marker" ng-transclude></span>';
+          this.template = '<span class="angular-google-map-marker" data-ng-click="click()" ng-transclude></span>';
           this.$log.info(this);
         }
 

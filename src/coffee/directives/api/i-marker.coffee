@@ -21,7 +21,7 @@ angular.module("google-maps.api")
             @scope =
                 coords: '=coords',
                 icon: '=icon',
-                click: '&click',
+                click: '&ngClick',
                 options: '=options',
                 events: '=events'
 

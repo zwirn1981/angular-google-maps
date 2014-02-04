@@ -6,7 +6,9 @@ var rndAddToLatLon = function () {
     return Math.floor(((Math.random() < 0.5 ? -1 : 1) * 2) + 1)
 }
 
-function DebugController($scope, $timeout, $log, $http) {
+function DebugController($scope, $timeout, $log, $http, Logger) {
+    Logger.doLog =  true;
+    $log = Logger;
     // Enable the new Google Maps visuals until it gets enabled by default.
     // See http://googlegeodevelopers.blogspot.ca/2013/05/a-fresh-new-look-for-maps-api-for-all.html
     google.maps.visualRefresh = true;
@@ -30,7 +32,7 @@ function DebugController($scope, $timeout, $log, $http) {
                 latitude: 45,
                 longitude: -74,
                 options:{
-                    visible:false
+                    visible:true
                 }
             },
             marker2: {
@@ -46,6 +48,13 @@ function DebugController($scope, $timeout, $log, $http) {
                 scrollwheel: false,
                 scaleControl: false
             }
+        },
+        showWindow: false,
+        windowClick: function (){
+            $scope.showWindow = true;
+        },
+        markerClick:function(){
+            $scope.showWindow = true;
         }
     });
 

@@ -4,7 +4,7 @@ angular.module("google-maps")
             constructor: ($timeout) ->
                 super($timeout)
                 self = @
-                @template = '<span class="angular-google-map-marker" ng-transclude></span>'
+                @template = '<span class="angular-google-map-marker" data-ng-click="click()" ng-transclude></span>'
                 @$log.info(@)
 
             controller: ['$scope', '$element', ($scope, $element) ->
