@@ -134,9 +134,4 @@ angular.module('angularGoogleMapsApp').controller('DemoCtrl', function ($scope, 
 			$scope.map.polylines.splice(index, 1);
 		}
 	};
-	
-	$http.get('https://rawgithub.com/nlaplante/angular-google-maps/website/app/views/demo.html').
-		then(function (response) {
-			$scope.templateHtml = response.data;
-		});
 });

@@ -4,20 +4,20 @@
 	<div class="panel panel-default">
 		<div class="panel-heading">
 			<h4 class="panel-title">
-				<a data-toggle="collapse" data-parent="#codeAccordion" href="#collapseCode">Controller code</a>
+				<a data-toggle="collapse" data-parent="#codeAccordion" data-target="#collapseCode" href="">Controller code</a>
 			</h4>
 		</div>
-		<div id="collapseCode" class="panel-collapse collapse">		
-			<pre><ng-include src="'https://rawgithub.com/nlaplante/angular-google-maps/website/app/scripts/controllers/demo.js'"></ng-include></pre>
+		<div id="collapseCode" class="panel-collapse collapse">
+			<div hljs language="javascript" include="'scripts/controllers/demo.js'"></div>
 		</div>
 		
 		<div class="panel-heading">
 			<h4 class="panel-title">
-				<a data-toggle="collapse" data-parent="#codeAccordion" href="#collapseTemplate">Template code</a>
+				<a data-toggle="collapse" data-parent="#codeAccordion" data-target="#collapseTemplate" href="">Template code</a>
 			</h4>
 		</div>
 		<div id="collapseTemplate" class="panel-collapse collapse">		
-			<pre ng-bind='templateHtml'></pre>
+			<div hljs language="html" include="'views/demo.html'"></div>
 		</div>		
 	</div>
 </div>
