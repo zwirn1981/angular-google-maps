@@ -205,3 +205,8 @@ pre {
 	margin-top: 20px;
 	display: block;
 }
+
+#demo-panels .panel-group {
+	margin-bottom: 20px;
+}
+

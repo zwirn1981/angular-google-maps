@@ -82,7 +82,7 @@ angular.module('angularGoogleMapsApp').controller('DemoCtrl', function ($scope, 
 		
 			$scope.map.polygons.push({
 				id: ++lastPolygonId,
-				title: 'Polyline ' + lastPolygonId,
+				title: 'Polygon ' + lastPolygonId,
 				path: path,
 				fill: {
 					color: '#ff0000',
@@ -132,6 +132,18 @@ angular.module('angularGoogleMapsApp').controller('DemoCtrl', function ($scope, 
 		
 		if (index !== -1) {
 			$scope.map.polylines.splice(index, 1);
+		}
+	};
+	
+	$scope.addPolygon= function () {
+		generateRandomPolygon(1);
+	};
+	
+	$scope.removePolygon = function (p) {
+		var index = _.indexOf($scope.map.polygons, p);
+		
+		if (index !== -1) {
+			$scope.map.polygons.splice(index, 1);
 		}
 	};
 });

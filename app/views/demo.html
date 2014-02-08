@@ -34,7 +34,7 @@
 		editable="p.editable"></polyline>
 		
 	<!-- our polygons -->
-	<polygon ng-repeat="p in map.polylines track by p.id" path="p.path" draggable="p.draggable" 
+	<polygon ng-repeat="p in map.polygons track by p.id" path="p.path" draggable="p.draggable" 
 		fill="p.fill"
 		clickable="p.clickable"
 		geodesic="p.geodesic"
@@ -42,9 +42,9 @@
 
 </google-map>
 
-<div class="row">
+<div class="row" id="demo-panels">
 
-	<div class="col-md-4">
+	<div class="col-md-6">
 		<div class="panel-group" id="accordionMap">
 			<div class="panel panel-default">
 				<div class="panel-heading">
@@ -74,40 +74,7 @@
 				</div>
 			</div>
 		</div>
-	</div>
-	
-	<div class="col-md-4">
-		<div class="panel-group" id="accordion">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h4 class="panel-title">
-						<a data-toggle="collapse" data-parent="#accordion" href="#collapseMarkers">Markers</a>
-						<span ng-click="addMarker()" class="glyphicon glyphicon-plus pull-right"></span>
-					</h4>		
-				</div>								
-				<div id="collapseMarkers" class="panel-collapse collapse in">
-					<table class="table">
-						<thead>
-							<tr>
-								<th>Coordinates</th>
-								<th></th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr ng-repeat="m in map.markers track by m.id">
-								<td><code>{{ m.coords | json }}</code></td>
-								<td>
-									<span class="glyphicon glyphicon-remove" ng-click="removeMarker(m)"></span>
-								</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-			</div>
-		</div>
-	</div>
-	
-	<div class="col-md-4">
+		
 		<div class="panel-group" id="accordioPolylines">
 			<div class="panel panel-default">
 				<div class="panel-heading">
@@ -141,6 +108,69 @@
 			</div>
 		</div>
 	</div>
+	
+	<div class="col-md-6">
+		<div class="panel-group" id="accordion">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h4 class="panel-title">
+						<a data-toggle="collapse" data-parent="#accordion" href="#collapseMarkers">Markers</a>
+						<span ng-click="addMarker()" class="glyphicon glyphicon-plus pull-right"></span>
+					</h4>		
+				</div>								
+				<div id="collapseMarkers" class="panel-collapse collapse in">
+					<table class="table">
+						<thead>
+							<tr>
+								<th>Coordinates</th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="m in map.markers track by m.id">
+								<td><code>{{ m.coords | json }}</code></td>
+								<td>
+									<span class="glyphicon glyphicon-remove" ng-click="removeMarker(m)"></span>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		
+		<div class="panel-group" id="accordioPolygons">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h4 class="panel-title">
+						<a data-toggle="collapse" data-parent="#accordion" href="#collapsePolygons">Polygons</a>
+						<span ng-click="addPolygon()" class="glyphicon glyphicon-plus pull-right"></span>
+					</h4>		
+				</div>								
+				<div id="collapsePolygons" class="panel-collapse collapse in">
+					<table class="table">
+						<thead>
+							<tr>
+								<th>Coordinates</th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="p in map.polygons track by p.id">
+								<td>
+									<div ng-repeat="point in p.path">
+										<code >{{ point | json }}</code>
+									</div>
+								</td>
+								<td>
+									<span class="glyphicon glyphicon-remove" ng-click="removePolygon(p)"></span>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
-
 
