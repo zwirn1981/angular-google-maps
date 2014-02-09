@@ -110,7 +110,8 @@ angular.module("google-maps")
 
                 opts
             map = mapCtrl.getMap()
-            polyline = new google.maps.Polyline(buildOpts(convertPathPoints(scope.path)))
+            pathPoints = convertPathPoints(scope.path)
+            polyline = new google.maps.Polyline(buildOpts(pathPoints))
             extendMapBounds map, pathPoints  if isTrue(attrs.fit)
             if angular.isDefined(scope.editable)
                 scope.$watch "editable", (newValue, oldValue) ->

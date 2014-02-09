@@ -877,13 +877,8 @@ Nicholas McCready - https://twitter.com/nmccready
           return remove.push(addEvent(target, key, _handler));
         });
         return function() {
-          angular.forEach(remove, function(fn) {
-            if (_.isFunction(fn)) {
-              fn();
-            }
-            if (fn.e !== null && _.isFunction(fn.e)) {
-              return fn.e();
-            }
+          angular.forEach(remove, function(listener) {
+            return google.maps.event.removeListener(listener);
           });
           return remove = null;
         };
@@ -3186,7 +3181,7 @@ Nicholas McCready - https://twitter.com/nmccready
             return;
           }
           return $timeout(function() {
-            var arraySyncer, buildOpts, map, polygon;
+            var arraySyncer, buildOpts, map, pathPoints, polygon;
             buildOpts = function(pathPoints) {
               var opts;
               opts = angular.extend({}, DEFAULTS, {
@@ -3214,7 +3209,8 @@ Nicholas McCready - https://twitter.com/nmccready
               return opts;
             };
             map = mapCtrl.getMap();
-            polygon = new google.maps.Polygon(buildOpts(convertPathPoints(scope.path)));
+            pathPoints = convertPathPoints(scope.path);
+            polygon = new google.maps.Polygon(buildOpts(pathPoints));
             if (isTrue(attrs.fit)) {
               extendMapBounds(map, pathPoints);
             }
@@ -3244,6 +3240,11 @@ Nicholas McCready - https://twitter.com/nmccready
                 if (newValue !== oldValue) {
                   return polygon.setOptions(buildOpts(polygon.getPath()));
                 }
+              });
+            }
+            if (angular.isDefined(scope.stroke) && angular.isDefined(scope.stroke.opacity)) {
+              scope.$watch("stroke.opacity", function(newValue, oldValue) {
+                return polygon.setOptions(buildOpts(polygon.getPath()));
               });
             }
             if (angular.isDefined(scope.stroke) && angular.isDefined(scope.stroke.weight)) {
@@ -3387,7 +3388,7 @@ Nicholas McCready - https://twitter.com/nmccready
             return;
           }
           return $timeout(function() {
-            var arraySyncer, buildOpts, map, polyline;
+            var arraySyncer, buildOpts, map, pathPoints, polyline;
             buildOpts = function(pathPoints) {
               var opts;
               opts = angular.extend({}, DEFAULTS, {
@@ -3413,7 +3414,8 @@ Nicholas McCready - https://twitter.com/nmccready
               return opts;
             };
             map = mapCtrl.getMap();
-            polyline = new google.maps.Polyline(buildOpts(convertPathPoints(scope.path)));
+            pathPoints = convertPathPoints(scope.path);
+            polyline = new google.maps.Polyline(buildOpts(pathPoints));
             if (isTrue(attrs.fit)) {
               extendMapBounds(map, pathPoints);
             }
