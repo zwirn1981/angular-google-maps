@@ -704,8 +704,8 @@ Nicholas McCready - https://twitter.com/nmccready
         if (!opt_options.clickable) {
           this.marker.set("clickable", true);
         }
-        if (!opt_options.draggable) {
-          this.marker.set("draggable", false);
+        if (!opt_options.lxdraggable) {
+          this.marker.set("lxdraggable", false);
         }
         if (!opt_options.optimized) {
           this.marker.set("optimized", false);
@@ -2471,7 +2471,7 @@ Nick Baugh - https://github.com/niftylettuce
           }
           _m = new google.maps.Map(el.find("div")[1], angular.extend({}, DEFAULTS, opts, {
             center: new google.maps.LatLng(scope.center.latitude, scope.center.longitude),
-            draggable: isTrue(attrs.draggable),
+            lxdraggable: isTrue(attrs.lxdraggable),
             zoom: scope.zoom,
             bounds: scope.bounds
           }));
@@ -2889,7 +2889,7 @@ Nicholas McCready - https://twitter.com/nmccready
           path: "=path",
           stroke: "=stroke",
           clickable: "=",
-          draggable: "=",
+          lxdraggable: "=",
           editable: "=",
           geodesic: "=",
           icons: "=icons",
@@ -2913,7 +2913,7 @@ Nicholas McCready - https://twitter.com/nmccready
             });
             angular.forEach({
               clickable: true,
-              draggable: false,
+              lxdraggable: false,
               editable: false,
               geodesic: false,
               visible: true
@@ -2933,9 +2933,9 @@ Nicholas McCready - https://twitter.com/nmccready
                 return polyline.setEditable(newValue);
               });
             }
-            if (angular.isDefined(scope.draggable)) {
-              scope.$watch("draggable", function(newValue, oldValue) {
-                return polyline.setDraggable(newValue);
+            if (angular.isDefined(scope.lxdraggable)) {
+              scope.$watch("lxdraggable", function(newValue, oldValue) {
+                return polyline.setlxdraggable(newValue);
               });
             }
             if (angular.isDefined(scope.visible)) {
@@ -3116,7 +3116,7 @@ Nicholas McCready - https://twitter.com/nmccready
           path: "=path",
           stroke: "=stroke",
           clickable: "=",
-          draggable: "=",
+          lxdraggable: "=",
           editable: "=",
           geodesic: "=",
           icons: "=icons",
@@ -3140,7 +3140,7 @@ Nicholas McCready - https://twitter.com/nmccready
               });
               angular.forEach({
                 clickable: true,
-                draggable: false,
+                lxdraggable: false,
                 editable: false,
                 geodesic: false,
                 visible: true
@@ -3163,9 +3163,9 @@ Nicholas McCready - https://twitter.com/nmccready
                 return polyline.setEditable(newValue);
               });
             }
-            if (angular.isDefined(scope.draggable)) {
-              scope.$watch("draggable", function(newValue, oldValue) {
-                return polyline.setDraggable(newValue);
+            if (angular.isDefined(scope.lxdraggable)) {
+              scope.$watch("lxdraggable", function(newValue, oldValue) {
+                return polyline.setlxdraggable(newValue);
               });
             }
             if (angular.isDefined(scope.visible)) {
@@ -4569,8 +4569,8 @@ MarkerClusterer.prototype.addMarkers = function (markers, opt_nodraw) {
  * @param {google.maps.Marker} marker The marker to add.
  */
 MarkerClusterer.prototype.pushMarkerTo_ = function (marker) {
-    // If the marker is draggable add a listener so we can update the clusters on the dragend:
-    if (marker.getDraggable()) {
+    // If the marker is lxdraggable add a listener so we can update the clusters on the dragend:
+    if (marker.getlxdraggable()) {
         var cMarkerClusterer = this;
         google.maps.event.addListener(marker, "dragend", function () {
             if (cMarkerClusterer.ready_) {
@@ -5014,7 +5014,7 @@ if (typeof String.prototype.trim !== 'function') {
  *  <code>google.maps.Marker</code> class.
  *  <p>
  *  MarkerWithLabel allows you to define markers with associated labels. As you would expect,
- *  if the marker is draggable, so too will be the label. In addition, a marker with a label
+ *  if the marker is lxdraggable, so too will be the label. In addition, a marker with a label
  *  responds to all mouse events in the same manner as a regular marker. It also fires mouse
  *  events and "property changed" events just as a regular marker would. Version 1.1 adds
  *  support for the raiseOnDrag feature introduced in API V3.3.
@@ -5153,24 +5153,24 @@ MarkerLabel_.prototype.onAdd = function () {
 
   this.listeners_ = [
     google.maps.event.addDomListener(this.eventDiv_, "mouseover", function (e) {
-      if (me.marker_.getDraggable() || me.marker_.getClickable()) {
+      if (me.marker_.getlxdraggable() || me.marker_.getClickable()) {
         this.style.cursor = "pointer";
         google.maps.event.trigger(me.marker_, "mouseover", e);
       }
     }),
     google.maps.event.addDomListener(this.eventDiv_, "mouseout", function (e) {
-      if ((me.marker_.getDraggable() || me.marker_.getClickable()) && !cDraggingLabel) {
+      if ((me.marker_.getlxdraggable() || me.marker_.getClickable()) && !cDraggingLabel) {
         this.style.cursor = me.marker_.getCursor();
         google.maps.event.trigger(me.marker_, "mouseout", e);
       }
     }),
     google.maps.event.addDomListener(this.eventDiv_, "mousedown", function (e) {
       cDraggingLabel = false;
-      if (me.marker_.getDraggable()) {
+      if (me.marker_.getlxdraggable()) {
         cMouseIsDown = true;
         this.style.cursor = cDraggingCursor;
       }
-      if (me.marker_.getDraggable() || me.marker_.getClickable()) {
+      if (me.marker_.getlxdraggable() || me.marker_.getClickable()) {
         google.maps.event.trigger(me.marker_, "mousedown", e);
         cAbortEvent(e); // Prevent map pan when starting a drag on a label
       }
@@ -5246,7 +5246,7 @@ MarkerLabel_.prototype.onAdd = function () {
       }
     }),
     google.maps.event.addDomListener(this.eventDiv_, "click", function (e) {
-      if (me.marker_.getDraggable() || me.marker_.getClickable()) {
+      if (me.marker_.getlxdraggable() || me.marker_.getClickable()) {
         if (cIgnoreClick) { // Ignore the click reported when a label drag ends
           cIgnoreClick = false;
         } else {
@@ -5256,7 +5256,7 @@ MarkerLabel_.prototype.onAdd = function () {
       }
     }),
     google.maps.event.addDomListener(this.eventDiv_, "dblclick", function (e) {
-      if (me.marker_.getDraggable() || me.marker_.getClickable()) {
+      if (me.marker_.getlxdraggable() || me.marker_.getClickable()) {
         google.maps.event.trigger(me.marker_, "dblclick", e);
         cAbortEvent(e); // Prevent map zoom when double-clicking on a label
       }
@@ -5520,7 +5520,7 @@ MarkerLabel_.prototype.setVisible = function () {
  *  <code>true</code>, the label will <i>not</i> be visible unless the associated marker is also
  *  visible (i.e., unless the marker's <code>visible</code> property is <code>true</code>).
  * @property {boolean} [raiseOnDrag] A flag indicating whether the label and marker are to be
- *  raised when the marker is dragged. The default is <code>true</code>. If a draggable marker is
+ *  raised when the marker is dragged. The default is <code>true</code>. If a lxdraggable marker is
  *  being created and a version of Google Maps API earlier than V3.3 is being used, this property
  *  must be set to <code>false</code>.
  * @property {boolean} [optimized] A flag indicating whether rendering is to be optimized for the
@@ -5552,8 +5552,8 @@ function MarkerWithLabel(opt_options) {
   if (typeof opt_options.clickable === "undefined") {
     opt_options.clickable = true;
   }
-  if (typeof opt_options.draggable === "undefined") {
-    opt_options.draggable = false;
+  if (typeof opt_options.lxdraggable === "undefined") {
+    opt_options.lxdraggable = false;
   }
   if (typeof opt_options.optimized === "undefined") {
     opt_options.optimized = false;
